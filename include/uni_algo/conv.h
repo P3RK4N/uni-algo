@@ -61,7 +61,7 @@ uaiw_constexpr Dst t_utf(const Alloc& alloc, const Src& src)
         dst.resize(length * SizeX);
         dst.resize(FnUTF(safe::in{src.data(), src.size()}, safe::end{src.data() + src.size()}, safe::out{dst.data(), dst.size()}, nullptr));
 #  else
-        dst.resize_and_overwrite(length * SizeX, [&src](typename Dst::pointer p, std::size_t n) noexcept -> std::size_t {
+        dst.resize_and_overwrite(length * SizeX, [&src](Dst::pointer p, std::size_t n) noexcept -> std::size_t {
             return FnUTF(safe::in{src.data(), src.size()}, safe::end{src.data() + src.size()}, safe::out{p, n}, nullptr);
         });
 #  endif
@@ -116,7 +116,7 @@ uaiw_constexpr Dst t_utf(const Alloc& alloc, const Src& src, una::error& error)
         const std::size_t size = FnUTF(safe::in{src.data(), src.size()}, safe::end{src.data() + src.size()}, safe::out{dst.data(), dst.size()}, &err);
 #  else
         std::size_t size = 0;
-        dst.resize_and_overwrite(length * SizeX, [&src, &size, &err](typename Dst::pointer p, std::size_t n) noexcept -> std::size_t {
+        dst.resize_and_overwrite(length * SizeX, [&src, &size, &err](Dst::pointer p, std::size_t n) noexcept -> std::size_t {
             size = FnUTF(safe::in{src.data(), src.size()}, safe::end{src.data() + src.size()}, safe::out{p, n}, &err);
             return size;
         });
